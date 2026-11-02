@@ -1,18 +1,27 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use Illuminate\View\View;
+
 /*
-    Nama	  	: Vega Lestari
-	NIM		  	: 3202416116
-	Nama File	: DosenController.php
+    Nama        : Vega Lestari
+    NIM         : 3202416116
+    Nama File   : DosenController.php
     Tanggal Buat: 15 Oktober 2026
 */
 
-namespace App\Http\Controllers;
-
 class DosenController extends Controller
 {
-    public function index()
+    public function index(): View
     {
+        $kolom = [
+            'nidn' => 'NIDN',
+            'nama' => 'Nama Dosen',
+            'email' => 'Email',
+            'bidang' => 'Bidang Keahlian',
+        ];
+
         $dosen = [
             [
                 'nidn' => '0012345678',
@@ -34,6 +43,6 @@ class DosenController extends Controller
             ],
         ];
 
-        return view('dosen.index', compact('dosen'));
+        return view('dosen.index', compact('kolom', 'dosen'));
     }
 }

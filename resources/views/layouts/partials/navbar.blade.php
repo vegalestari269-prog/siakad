@@ -1,4 +1,4 @@
-<nav class="navbar navbar-dark bg-primary sticky-top shadow-sm">
+<nav class="navbar navbar-dark bg-success sticky-top shadow-sm">
     <div class="container-fluid">
         <div class="d-flex align-items-center">
             <button class="navbar-toggler d-lg-none me-2" type="button"
@@ -12,17 +12,66 @@
             </a>
         </div>
 
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle"></i>
-                <span class="d-none d-sm-inline">Administrator</span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-                <li><span class="dropdown-item-text small">Akun contoh</span></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item disabled" href="#">Keluar</a></li>
-            </ul>
-        </div>
+        
+		<div class="dropdown">
+			<button class="btn btn-primary dropdown-toggle"
+					type="button"
+					data-bs-toggle="dropdown"
+					aria-expanded="false">
+
+				<i class="bi bi-person-circle"></i>
+
+				<span class="d-none d-sm-inline">
+					{{ Auth::user()->name }}
+				</span>
+			</button>
+
+			<ul class="dropdown-menu dropdown-menu-end">
+				<li>
+					<span class="dropdown-item-text small">
+						{{ Auth::user()->email }}
+
+						<span class="badge text-bg-secondary ms-1">
+							{{ Auth::user()->role }}
+						</span>
+					</span>
+				</li>
+
+				<li><hr class="dropdown-divider"></li>
+
+				<li>
+					<form method="POST" action="{{ route('logout') }}">
+						@csrf
+
+						<button type="submit"
+								class="dropdown-item text-danger">
+							<i class="bi bi-box-arrow-right me-1"></i>
+							Keluar
+						</button>
+					</form>
+				</li>
+			</ul>
+		</div>
     </div>
 </nav>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tombol = document.getElementById('tombolTema');
+        const html = document.documentElement;
+        const ikon = tombol.querySelector('i');
+
+        tombol.addEventListener('click', function () {
+            const temaSaatIni = html.getAttribute('data-bs-theme');
+            const temaBaru = temaSaatIni === 'dark' ? 'light' : 'dark';
+
+            html.setAttribute('data-bs-theme', temaBaru);
+
+            ikon.className = temaBaru === 'dark'
+                ? 'bi bi-sun-fill'
+                : 'bi bi-moon-stars-fill';
+        });
+    });
+</script>
+@endpush

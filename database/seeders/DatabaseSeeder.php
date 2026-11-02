@@ -1,25 +1,27 @@
 <?php
 
+/*
+    Nama            : Vega Lestari
+    NIM             : 3202416116
+    Tanggal Pembuat : 22 Oktober 2026
+    Nama File       : DatabaseSeeder.php
+*/
+
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            AdminSeeder::class,
+			UserSeeder::class,
+            DosenSeeder::class,
+            MahasiswaSeeder::class,
+            MataKuliahSeeder::class,
+			KrsSeeder::class,
         ]);
     }
 }

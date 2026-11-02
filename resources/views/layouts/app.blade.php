@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+      data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,13 +21,11 @@
             @include('layouts.partials.sidebar')
 
             <main class="col-lg-9 col-xl-10 px-3 px-md-4 py-4">
-                @yield('content')
+				@include('layouts.partials.flash')
 
-                <footer class="text-center text-body-secondary small mt-5">
-                    &copy; {{ date('Y') }} {{ config('app.name') }}
-                    - D3 Teknik Informatika
-                </footer>
-            </main>
+				@yield('content')
+				{{-- footer dan sisanya tetap seperti Jobsheet 08 --}}
+			</main>
         </div>
     </div>
 

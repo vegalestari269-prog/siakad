@@ -1,18 +1,28 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use Illuminate\View\View;
+
 /*
-    Nama	  	: Vega Lestari
-	NIM		  	: 3202416116
-	Nama File	: KrsController.php
+    Nama        : Vega Lestari
+    NIM         : 3202416116
+    Nama File   : KrsController.php
     Tanggal Buat: 15 Oktober 2026
 */
 
-namespace App\Http\Controllers;
-
 class KrsController extends Controller
 {
-    public function index()
+    public function index(): View
     {
+        $kolom = [
+            'id' => 'ID KRS',
+            'nim' => 'NIM',
+            'nama_mahasiswa' => 'Nama Mahasiswa',
+            'semester' => 'Semester',
+            'total_sks' => 'Total SKS',
+        ];
+
         $krs = [
             [
                 'id' => 1,
@@ -37,6 +47,6 @@ class KrsController extends Controller
             ],
         ];
 
-        return view('krs.index', compact('krs'));
+        return view('krs.index', compact('kolom', 'krs'));
     }
 }

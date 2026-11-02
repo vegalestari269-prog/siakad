@@ -1,19 +1,21 @@
 <?php
 
-/*
-    Nama	  	: Vega Lestari
-	NIM		  	: 3202416116
-	Nama File	: MataKuliahController.php
-    Tanggal Buat: 15 Oktober 2026
-*/
-
 namespace App\Http\Controllers;
+
+use Illuminate\View\View;
 
 class MataKuliahController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        $mataKuliah = [
+        $kolom = [
+            'kode' => 'Kode Mata Kuliah',
+            'nama' => 'Nama Mata Kuliah',
+            'sks' => 'SKS',
+            'semester' => 'Semester',
+        ];
+
+        $matakuliah = [
             [
                 'kode' => 'IF101',
                 'nama' => 'Algoritma dan Pemrograman',
@@ -34,6 +36,6 @@ class MataKuliahController extends Controller
             ],
         ];
 
-        return view('mata-kuliah.index', compact('mataKuliah'));
+        return view('mata-kuliah.index', compact('kolom', 'matakuliah'));
     }
 }
