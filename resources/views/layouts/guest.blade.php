@@ -13,7 +13,11 @@
           rel="stylesheet">
 
     <link href="{{ asset('css/siakad.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ asset('vendor/sweetalert2/sweetalert2.min.css') }}">
 </head>
+
 <body class="bg-body-tertiary">
 
     <main class="container min-vh-100 py-4 d-flex align-items-center justify-content-center">
@@ -23,5 +27,47 @@
     </main>
 
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+    <script src="{{ asset('vendor/sweetalert2/sweetalert2.all.min.js') }}"></script>
+
+    <script>
+        const pesanSukses = @json(session('success'));
+        const pesanError = @json(session('error'));
+        const pesanWarning = @json(session('warning'));
+        const pesanInfo = @json(session('info'));
+
+        if (pesanSukses) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: pesanSukses
+            });
+        }
+
+        if (pesanError) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: pesanError
+            });
+        }
+
+        if (pesanWarning) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan!',
+                text: pesanWarning
+            });
+        }
+
+        if (pesanInfo) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Informasi!',
+                text: pesanInfo
+            });
+        }
+    </script>
+
 </body>
 </html>

@@ -19,6 +19,7 @@ class LoginController extends Controller
 
     public function authenticate(Request $request): RedirectResponse
     {
+        // Validasi email dan kata sandi
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'string'],
@@ -28,8 +29,10 @@ class LoginController extends Controller
             'password.required' => 'Kata sandi wajib diisi.',
         ]);
 
+        // Membuat kunci pembatasan percobaan login
         $key = $this->throttleKey($request);
 
+        // Memeriksa batas percobaan login
         if (RateLimiter::tooManyAttempts($key, 5)) {
             $detik = RateLimiter::availableIn($key);
             $pesan = "Terlalu banyak percobaan login. Coba lagi dalam {$detik} detik.";
@@ -39,13 +42,23 @@ class LoginController extends Controller
                 ->onlyInput('email');
         }
 
+        // Memeriksa email dan kata sandi
         if (Auth::attempt(
             $credentials,
             $request->boolean('remember')
         )) {
+            // Menghapus hitungan percobaan login
             RateLimiter::clear($key);
+
+            // Memperbarui session
             $request->session()->regenerate();
 
+            // Menyimpan waktu login terakhir pengguna
+            $request->user()->update([
+                'last_login_at' => now(),
+            ]);
+
+            // Pesan login berhasil
             $pesan = 'Login berhasil. Selamat datang, '
                 . Auth::user()->name . '.';
 
@@ -54,6 +67,7 @@ class LoginController extends Controller
                 ->with('success', $pesan);
         }
 
+        // Menambah hitungan jika login gagal
         RateLimiter::hit($key, 60);
 
         return back()
@@ -63,8 +77,10 @@ class LoginController extends Controller
 
     public function logout(Request $request): RedirectResponse
     {
+        // Mengeluarkan pengguna
         Auth::logout();
 
+        // Menghapus session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
@@ -73,6 +89,7 @@ class LoginController extends Controller
             ->with('success', 'Anda telah berhasil keluar.');
     }
 
+    // Membuat kunci pembatasan berdasarkan email dan IP
     private function throttleKey(Request $request): string
     {
         return Str::transliterate(
