@@ -1,12 +1,5 @@
 <?php
 
-/*
-    Nama            : Vega Lestari
-    NIM             : 3202416116
-    Tanggal Pembuat : 22 Oktober 2026
-    Nama File       : KrsDetail.php
-*/
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -21,11 +14,13 @@ class KrsDetail extends Model
         'mata_kuliah_id',
     ];
 
+    // Relasi Detail KRS dengan KRS
     public function krs(): BelongsTo
     {
         return $this->belongsTo(Krs::class, 'krs_id');
     }
 
+    // Relasi Detail KRS dengan Mata Kuliah
     public function mataKuliah(): BelongsTo
     {
         return $this->belongsTo(MataKuliah::class, 'mata_kuliah_id');

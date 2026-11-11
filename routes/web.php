@@ -47,17 +47,77 @@ Route::middleware([NoStoreHeaders::class, 'auth'])->group(function () {
 		abort(403);
 	});
 
-    // Data Mahasiswa
-    Route::get('/mahasiswa', [MahasiswaController::class, 'index'])
-        ->name('mahasiswa.index');
+	// ==========================
+	// DATA MAHASISWA (JOBSHEET 12)
+	// ==========================
 
-    // Data Mata Kuliah
-    Route::get('/mata-kuliah', [MataKuliahController::class, 'index'])
-        ->name('matakuliah.index');
+	// 1. Endpoint JSON DataTables Server-Side
+	Route::get('/mahasiswa/data', [MahasiswaController::class, 'data'])
+		->name('mahasiswa.data');
 
-    // Data KRS
-    Route::get('/krs', [KrsController::class, 'index'])
-        ->name('krs.index');
+	// 2. Tambah, ubah, dan hapus mahasiswa khusus admin
+	Route::middleware('role:admin')->group(function () {
+
+		Route::resource('mahasiswa', MahasiswaController::class)
+			->except(['index', 'show']);
+
+	});
+
+	// 3. Daftar dan detail mahasiswa untuk semua pengguna login
+	Route::resource('mahasiswa', MahasiswaController::class)
+		->only(['index', 'show']);
+		
+
+    // ==========================
+	// DATA MATA KULIAH (JOBSHEET 12)
+	// ==========================
+
+	// 1. Endpoint JSON DataTables Server-Side
+	Route::get('/mata-kuliah/data', [MataKuliahController::class, 'data'])
+		->name('matakuliah.data');
+
+	// 2. Tambah, ubah, dan hapus mata kuliah khusus admin
+	Route::middleware('role:admin')->group(function () {
+
+		Route::resource('mata-kuliah', MataKuliahController::class)
+			->parameters(['mata-kuliah' => 'mataKuliah'])
+			->except(['index', 'show'])
+			->names([
+				'create' => 'matakuliah.create',
+				'store' => 'matakuliah.store',
+				'edit' => 'matakuliah.edit',
+				'update' => 'matakuliah.update',
+				'destroy' => 'matakuliah.destroy',
+			]);
+
+	});
+
+	// 3. Daftar dan detail mata kuliah untuk semua pengguna login
+	Route::resource('mata-kuliah', MataKuliahController::class)
+		->parameters(['mata-kuliah' => 'mataKuliah'])
+		->only(['index', 'show'])
+		->names([
+			'index' => 'matakuliah.index',
+			'show' => 'matakuliah.show',
+		]);
+
+    // Route DataTables KRS
+	Route::get('/krs/data', [KrsController::class, 'data'])
+		->name('krs.data');
+
+	// Route khusus admin untuk tambah, simpan, edit, update, dan hapus
+	Route::middleware('role:admin')->group(function () {
+
+		Route::resource('krs', KrsController::class)
+			->except(['index', 'show'])
+			->parameters(['krs' => 'kr']);
+
+	});
+
+	// Route untuk menampilkan daftar dan detail KRS
+	Route::resource('krs', KrsController::class)
+		->only(['index', 'show'])
+		->parameters(['krs' => 'kr']);
 
     // Beranda
     Route::get('/beranda', [BerandaController::class, 'index'])
